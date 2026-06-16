@@ -452,98 +452,51 @@
 
 <script src="script.js"></script>
 <!-- ========================================== -->
-
-
-    <!-- ========================================== -->
-<!-- MOBILE CENTERED POPUP (TOUCH EVENT FIX)    -->
-<!-- ========================================== -->
-<div class="ad-modal-backdrop" id="adModal">
+<!-- AD OVERLAY SYSTEM WITH VIDEO CONTAINER -->
+<div class="ad-overlay" id="adOverlay">
     <div class="ad-modal-content">
+        <!-- Manual close button fallback -->
+        <button class="ad-close-btn" id="adCloseBtn" aria-label="Close video">&times;</button>
         
-        <!-- Header row cleanly locked right above the video container -->
-        <div class="ad-modal-header-row">
-            <!-- Added ontouchstart for immediate finger tap recognition on mobile -->
-            <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()" ontouchstart="toggleCustomAudio()">
-                <i class="fas fa-volume-mute" id="soundIcon"></i> <span id="soundText">Tap for sound!</span>
-            </div>
-            <!-- Added ontouchstart directly into the close trigger button element -->
-            <button class="ad-modal-close" onclick="closeAdModal()" ontouchstart="closeAdModal()">&times; Close Ad</button>
-        </div>
-
-        <!-- Video element attached directly below the utility row -->
-        <div class="video-container-frame">
-            <video id="customAdPlayer" autoplay muted playsinline controls style="width:100%; display:block; border-radius:6px;">
+        <!-- Video Container -->
+        <div class="ad-video-wrapper">
+            <video id="adVideo" width="100%" height="auto" controls autoplay muted>
+                <!-- REPLACE THE FILEPATH BELOW WITH YOUR ACTUAL VIDEO LINK -->
                 <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
-
     </div>
 </div>
 
 <script>
-    // Flag to prevent the function from double-firing on devices that trigger touch and click simultaneously
-    let isClosing = false;
+    document.addEventListener('DOMContentLoaded', () => {
+        const adOverlay = document.getElementById('adOverlay');
+        const adCloseBtn = document.getElementById('adCloseBtn');
+        const adVideo = document.getElementById('adVideo');
 
-    function closeAdModal(event) {
-        if (isClosing) return;
-        isClosing = true;
-
-        // Stops mobile browser default click processing loops instantly
-        if (event && event.cancelable) {
-            event.preventDefault();
+        // Combined function to stop playback and hide elements cleanly
+        function dismissVideoAd() {
+            if (adVideo) {
+                adVideo.pause();       // Stops the audio/video stream immediately
+                adVideo.currentTime = 0; // Resets video back to zero frame
+            }
+            if (adOverlay) {
+                adOverlay.style.display = 'none'; // Dismisses the popup UI
+            }
         }
 
-        const modal = document.getElementById('adModal');
-        const video = document.getElementById('customAdPlayer');
-        
-        if (video) { 
-            video.pause(); // Stops media playback processes
-            video.src = ""; // Hard-kills the raw streaming file data connection to drop audio instantly
-        } 
-        
-        if (modal) { 
-            modal.style.display = 'none'; // Dismisses the layout frame from the user viewport
-        }
-    }
+        // CRITICAL CHECK: Close ONLY if clicking directly on the background blur overlay plane
+        adOverlay.addEventListener('click', (event) => {
+            if (event.target === adOverlay) {
+                dismissVideoAd();
+            }
+        });
 
-    let isAudioToggled = false;
-    function toggleCustomAudio(event) {
-        if (isAudioToggled) return;
-        isAudioToggled = true;
-
-        if (event && event.cancelable) {
-            event.preventDefault();
-        }
-
-        const video = document.getElementById('customAdPlayer');
-        const icon = document.getElementById('soundIcon');
-        const text = document.getElementById('soundText');
-        const bar = document.getElementById('adSoundBar');
-        
-        if (video) {
-            video.muted = false; 
-            bar.style.background = "#00A651"; 
-            text.innerText = "Sound On!";
-            icon.className = "fas fa-volume-up";
-            
-            setTimeout(() => {
-                bar.style.opacity = '0';
-                setTimeout(() => { bar.style.visibility = 'hidden'; }, 300);
-            }, 800);
-        }
-    }
-
-    // Auto-close system: Automatically shuts down popup once commercial finishes
-    document.getElementById('customAdPlayer').addEventListener('ended', function() {
-        isClosing = false;
-        closeAdModal();
+        // Close instantly when backup 'X' button layout is selected
+        adCloseBtn.addEventListener('click', dismissVideoAd);
     });
 </script>
-<!-- ========================================== -->
-<!-- END OF MOBILE CENTERED POPUP               -->
-<!-- ========================================== -->
-
 
 
 
