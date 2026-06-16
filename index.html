@@ -452,53 +452,64 @@
 
 <script src="script.js"></script>
 
-
 <!-- ========================================== -->
-<!-- START OF ISOLATED AD POPUP (COMPACT 480P) -->
+<!-- START OF CUSTOM-MADE AD POPUP (NO STREAMABLE) -->
 <!-- ========================================== -->
 <div class="ad-modal-backdrop" id="adModal">
     <div class="ad-modal-content">
-        <!-- Red Close Ad Text Label -->
+        <!-- Brand Matched Close Command -->
         <button class="ad-modal-close" onclick="closeAdModal()">&times; Close Ad</button>
         
-        <!-- Pulsing Human-Interaction Unmute Banner -->
-        <div class="sound-alert-bar" onclick="unmuteAdStream()">
-            <i class="fas fa-volume-up"></i> Video has sound! Click here to listen
+        <!-- Animated Custom Mute/Unmute Alert Banner -->
+        <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()">
+            <i class="fas fa-volume-mute" id="soundIcon"></i> <span id="soundText">Video is muted. Click here for sound!</span>
         </div>
 
-        <!-- The Isolated Media Container -->
-        <div class="video-container-frame" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
-            <!-- REPLACE THE LINK INSIDE SRC="" BELOW WITH YOUR NEW STREAMABLE URL -->
-            <!-- Note: Make sure your URL has "/e/" in the middle so it embeds correctly -->
-            <iframe id="adIframePlayer" src="https://streamable.com/kfozue" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0; border-radius: 8px;" allowfullscreen allow="encrypted-media; gyroscope; picture-in-picture; autoplay;"></iframe>
+        <!-- Clean Native Custom Video Player Framework -->
+        <div class="video-container-frame" style="width:100%; overflow:hidden;">
+            <!-- PASTE YOUR COPIED DIRECT .MP4 LINK INSIDE THE SRC DRAWERS BELOW -->
+            <video id="customAdPlayer" autoplay muted playsinline controls style="width:100%; display:block; border-radius:8px;">
+                <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
 </div>
 
 <script>
-    // 1. Shuts down the popup window and kills the audio track instantly
+    // 1. Closes the popup and kills player processes safely
     function closeAdModal() {
         const modal = document.getElementById('adModal');
-        const iframe = document.getElementById('adIframePlayer');
-        if(iframe) { iframe.src = ""; } 
+        const video = document.getElementById('customAdPlayer');
+        if(video) { video.pause(); } // Shuts down audio/video execution immediately
         if(modal) { modal.style.display = 'none'; }
     }
 
-    // 2. Swaps the silent tokens to activate audio channels upon customer click
-    function unmuteAdStream() {
-        const iframe = document.getElementById('adIframePlayer');
-        const alertBar = document.querySelector('.sound-alert-bar');
-        if(iframe) {
-            let currentSrc = iframe.src;
-            if(currentSrc.includes("mute=1")) {
-                iframe.src = currentSrc.replace("mute=1", "muted=0");
-            }
+    // 2. Custom Interactive Unmute Script (Bypasses Browser Security Safely)
+    function toggleCustomAudio() {
+        const video = document.getElementById('customAdPlayer');
+        const icon = document.getElementById('soundIcon');
+        const text = document.getElementById('soundText');
+        const bar = document.getElementById('adSoundBar');
+        
+        if(video) {
+            video.muted = false; // Triggers live track stream audio channels
+            // Visually turns the alert bar green to indicate success, then slides it away
+            bar.style.background = "#00A651"; 
+            text.innerText = "Audio Activated!";
+            icon.className = "fas fa-volume-up";
+            
+            setTimeout(() => {
+                bar.style.display = 'none';
+            }, 800);
         }
-        if(alertBar) { alertBar.style.display = 'none'; } // Hides the banner once unmuted
     }
+
+    // 3. Auto-close system: Automatically shuts down popup once commercial finishes
+    document.getElementById('customAdPlayer').addEventListener('ended', closeAdModal);
 </script>
 <!-- ========================================== -->
-<!-- END OF ISOLATED AD POPUP -->
+<!-- END OF CUSTOM-MADE AD POPUP -->
 <!-- ========================================== -->
 
 
