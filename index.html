@@ -14,10 +14,6 @@
 </head>
 <body>
     
-<video autoplay muted loop playsinline width="100%" preload="auto">
-  <source src="ad-video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 <!-- NAV -->
 <nav class="navbar" id="navbar">
     <div class="nav-inner">
@@ -41,8 +37,17 @@
     </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO WITH BACKGROUND VIDEO -->
 <section class="hero" id="home">
+    <!-- The Video Background Component -->
+    <video autoplay muted loop playsinline preload="auto" class="hero-video-bg">
+        <source src="ad-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Dark Cinematic Overlay to ensure text is highly readable -->
+    <div class="hero-video-overlay"></div>
+
     <div class="hero-bg">
         <div class="hero-grid"></div>
         <div class="hero-glow"></div>
@@ -86,6 +91,7 @@
     </div>
     <div class="scroll-hint"><span>Scroll</span><i class="fas fa-chevron-down"></i></div>
 </section>
+
 
 <!-- BRANDS STRIP -->
 <div class="brands-strip">
