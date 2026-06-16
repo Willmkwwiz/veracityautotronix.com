@@ -452,25 +452,28 @@
 
 <script src="script.js"></script>
 <!-- ========================================== -->
-<!-- FIXED CUSTOM-MADE AD POPUP -->
+<!-- MOBILE DEAD-CENTERED CUSTOM AD POPUP       -->
 <!-- ========================================== -->
 <div class="ad-modal-backdrop" id="adModal">
+    <!-- Main Bound Box Layer -->
     <div class="ad-modal-content">
-        <!-- MOVED BUTTON INSIDE: Clean & Highly-Responsive Tap Layout -->
-        <button class="ad-modal-close" onclick="closeAdModal()">&times; Close Ad</button>
         
-        <!-- Animated Custom Mute/Unmute Alert Banner -->
-        <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()">
-            <i class="fas fa-volume-mute" id="soundIcon"></i> <span id="soundText">Video is muted. Click here for sound!</span>
+        <!-- Top Row Panel Layer (Always Directly Above Video Element) -->
+        <div class="ad-modal-header-row">
+            <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()">
+                <i class="fas fa-volume-mute" id="soundIcon"></i> <span id="soundText">Tap for sound!</span>
+            </div>
+            <button class="ad-modal-close" onclick="closeAdModal()">&times; Close Ad</button>
         </div>
 
-        <!-- Clean Native Custom Video Player Framework -->
-        <div class="video-container-frame" style="width:100%; overflow:hidden;">
+        <!-- Centered Video Component Box Frame -->
+        <div class="video-container-frame">
             <video id="customAdPlayer" autoplay muted playsinline controls style="width:100%; display:block; border-radius:8px;">
                 <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
+
     </div>
 </div>
 
@@ -491,18 +494,21 @@
         if(video) {
             video.muted = false; 
             bar.style.background = "#00A651"; 
-            text.innerText = "Audio Activated!";
+            text.innerText = "Sound On!";
             icon.className = "fas fa-volume-up";
             
             setTimeout(() => {
-                bar.style.display = 'none';
+                bar.style.opacity = '0';
+                setTimeout(() => { bar.style.visibility = 'hidden'; }, 300);
             }, 800);
         }
     }
 
     document.getElementById('customAdPlayer').addEventListener('ended', closeAdModal);
 </script>
-
+<!-- ========================================== -->
+<!-- END OF MOBILE DEAD-CENTERED CUSTOM AD POPUP -->
+<!-- ========================================== -->
 
 
 
