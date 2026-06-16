@@ -959,4 +959,41 @@ img { max-width: 100%; display: block; }
     .section-title { font-size: 1.8rem; }
     .brand-pills { gap: 0.5rem; }
     .brands-inner { flex-direction: column; align-items: flex-start; }
+
+   /* Video Hero Background Configuration */
+.hero {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.hero-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops the video beautifully on all screens */
+    z-index: 0; /* Keeps it behind the layout content */
+    pointer-events: none; /* Stops users from clicking or pausing it */
+}
+
+/* Semi-transparent tint to make white text stand out over your video graphics */
+.hero-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 15, 30, 0.65); /* Rich dark tech-blue shade overlay */
+    z-index: 1;
+}
+
+/* Force your text elements to slide smoothly above the streaming video player layer */
+.hero-content, 
+.hero-visual, 
+.scroll-hint {
+    position: relative;
+    z-index: 2 !important;
+}
+
 }
