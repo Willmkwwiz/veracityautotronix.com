@@ -451,31 +451,27 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <script src="script.js"></script>
-
-
-    <!-- START OF AD VIDEO MODAL (Safe Placement) -->
+<!-- START OF STREAMABLE AD POPUP -->
 <div class="ad-modal-backdrop" id="adModal">
     <div class="ad-modal-content">
         <button class="ad-modal-close" onclick="closeAdModal()">&times; Close Ad</button>
-        <video id="adVideo" autoplay muted playsinline controls style="width:100%; border-radius:8px;">
-            <source src="ad-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="video-container" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+            <!-- REPLACE THE SRC LINK BELOW WITH YOUR COPIED STREAMABLE EMBED LINK -->
+            <iframe id="adStreamable" src="/e/https://streamable.com/kfozue" frameborder="0" width="100%" height="100%" allow="autoplay" style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:8px;"></iframe>
+        </div>
     </div>
 </div>
 
 <script>
-    // Automatically close or handle the video overlay smoothly
     function closeAdModal() {
         const modal = document.getElementById('adModal');
-        const video = document.getElementById('adVideo');
-        if(video) { video.pause(); } // Stops playing when closed
+        const iframe = document.getElementById('adStreamable');
+        if(iframe) { iframe.src = ""; } // Kills video player instantly when closed
         if(modal) { modal.style.display = 'none'; }
     }
-    // Safety check: Auto-close if video ends naturally
-    document.getElementById('adVideo').addEventListener('ended', closeAdModal);
 </script>
-<!-- END OF AD VIDEO MODAL -->
+<!-- END OF STREAMABLE AD POPUP -->
 
-</body>
+
+  </body>
 </html>
