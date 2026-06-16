@@ -452,23 +452,27 @@
 
 <script src="script.js"></script>
 <!-- ========================================== -->
-<!-- MOBILE DEAD-CENTERED CUSTOM AD POPUP       -->
+
+
+    <!-- ========================================== -->
+<!-- MOBILE CENTERED POPUP (TOUCH EVENT FIX)    -->
 <!-- ========================================== -->
 <div class="ad-modal-backdrop" id="adModal">
-    <!-- Main Bound Box Layer -->
     <div class="ad-modal-content">
         
-        <!-- Top Row Panel Layer (Always Directly Above Video Element) -->
+        <!-- Header row cleanly locked right above the video container -->
         <div class="ad-modal-header-row">
-            <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()">
+            <!-- Added ontouchstart for immediate finger tap recognition on mobile -->
+            <div class="sound-alert-bar" id="adSoundBar" onclick="toggleCustomAudio()" ontouchstart="toggleCustomAudio()">
                 <i class="fas fa-volume-mute" id="soundIcon"></i> <span id="soundText">Tap for sound!</span>
             </div>
-            <button class="ad-modal-close" onclick="closeAdModal()">&times; Close Ad</button>
+            <!-- Added ontouchstart directly into the close trigger button element -->
+            <button class="ad-modal-close" onclick="closeAdModal()" ontouchstart="closeAdModal()">&times; Close Ad</button>
         </div>
 
-        <!-- Centered Video Component Box Frame -->
+        <!-- Video element attached directly below the utility row -->
         <div class="video-container-frame">
-            <video id="customAdPlayer" autoplay muted playsinline controls style="width:100%; display:block; border-radius:8px;">
+            <video id="customAdPlayer" autoplay muted playsinline controls style="width:100%; display:block; border-radius:6px;">
                 <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -478,20 +482,46 @@
 </div>
 
 <script>
-    function closeAdModal() {
+    // Flag to prevent the function from double-firing on devices that trigger touch and click simultaneously
+    let isClosing = false;
+
+    function closeAdModal(event) {
+        if (isClosing) return;
+        isClosing = true;
+
+        // Stops mobile browser default click processing loops instantly
+        if (event && event.cancelable) {
+            event.preventDefault();
+        }
+
         const modal = document.getElementById('adModal');
         const video = document.getElementById('customAdPlayer');
-        if(video) { video.pause(); } 
-        if(modal) { modal.style.display = 'none'; }
+        
+        if (video) { 
+            video.pause(); // Stops media playback processes
+            video.src = ""; // Hard-kills the raw streaming file data connection to drop audio instantly
+        } 
+        
+        if (modal) { 
+            modal.style.display = 'none'; // Dismisses the layout frame from the user viewport
+        }
     }
 
-    function toggleCustomAudio() {
+    let isAudioToggled = false;
+    function toggleCustomAudio(event) {
+        if (isAudioToggled) return;
+        isAudioToggled = true;
+
+        if (event && event.cancelable) {
+            event.preventDefault();
+        }
+
         const video = document.getElementById('customAdPlayer');
         const icon = document.getElementById('soundIcon');
         const text = document.getElementById('soundText');
         const bar = document.getElementById('adSoundBar');
         
-        if(video) {
+        if (video) {
             video.muted = false; 
             bar.style.background = "#00A651"; 
             text.innerText = "Sound On!";
@@ -504,10 +534,14 @@
         }
     }
 
-    document.getElementById('customAdPlayer').addEventListener('ended', closeAdModal);
+    // Auto-close system: Automatically shuts down popup once commercial finishes
+    document.getElementById('customAdPlayer').addEventListener('ended', function() {
+        isClosing = false;
+        closeAdModal();
+    });
 </script>
 <!-- ========================================== -->
-<!-- END OF MOBILE DEAD-CENTERED CUSTOM AD POPUP -->
+<!-- END OF MOBILE CENTERED POPUP               -->
 <!-- ========================================== -->
 
 
