@@ -452,16 +452,23 @@
 
 <script src="script.js"></script>
 <!-- ========================================== -->
-<!-- AD OVERLAY SYSTEM WITH VIDEO CONTAINER -->
+
+
+
+
+    <!-- ================================================
+     POPUP AD SYSTEM WINDOW WITH BLUR DISMISS
+     ================================================ -->
 <div class="ad-overlay" id="adOverlay">
     <div class="ad-modal-content">
-        <!-- Manual close button fallback -->
-        <button class="ad-close-btn" id="adCloseBtn" aria-label="Close video">&times;</button>
+        <!-- Floating Close Assist button directly above video card frame -->
+        <button class="ad-close-btn" id="adCloseBtn" aria-label="Close video ad">&times;</button>
         
-        <!-- Video Container -->
+        <!-- Video Box Viewport Layout -->
         <div class="ad-video-wrapper">
-            <video id="adVideo" width="100%" height="auto" controls autoplay muted>
-                <!-- REPLACE THE FILEPATH BELOW WITH YOUR ACTUAL VIDEO LINK -->
+            <!-- added 'playsinline' to ensure autoplay works smoothly on mobile Safari/Chrome -->
+            <video id="adVideo" width="100%" height="auto" controls autoplay muted playsinline>
+                <!-- PASTE YOUR EXACT CATBOX LINK IN THE SRC BELOW (Keep the .mp4 extension) -->
                 <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -475,28 +482,29 @@
         const adCloseBtn = document.getElementById('adCloseBtn');
         const adVideo = document.getElementById('adVideo');
 
-        // Combined function to stop playback and hide elements cleanly
-        function dismissVideoAd() {
+        // Function to pause the video stream and hide the popup window cleanly
+        function closeAdWindow() {
             if (adVideo) {
-                adVideo.pause();       // Stops the audio/video stream immediately
-                adVideo.currentTime = 0; // Resets video back to zero frame
+                adVideo.pause();
+                adVideo.currentTime = 0;
             }
             if (adOverlay) {
-                adOverlay.style.display = 'none'; // Dismisses the popup UI
+                adOverlay.style.display = 'none';
             }
         }
 
-        // CRITICAL CHECK: Close ONLY if clicking directly on the background blur overlay plane
+        // DISMISS VIA BLURRY BACKGROUND: Only closes if clicking directly on the backdrop plane
         adOverlay.addEventListener('click', (event) => {
             if (event.target === adOverlay) {
-                dismissVideoAd();
+                closeAdWindow();
             }
         });
 
-        // Close instantly when backup 'X' button layout is selected
-        adCloseBtn.addEventListener('click', dismissVideoAd);
+        // Backup cross icon click event
+        adCloseBtn.addEventListener('click', closeAdWindow);
     });
 </script>
+
 
 
 
