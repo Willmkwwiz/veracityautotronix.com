@@ -476,11 +476,29 @@
     </div>
 </div>
 
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const adOverlay = document.getElementById('adOverlay');
         const adCloseBtn = document.getElementById('adCloseBtn');
         const adVideo = document.getElementById('adVideo');
+
+        // Check if the user has already seen the pop-up during a previous visit
+        const hasSeenAd = localStorage.getItem('veracity_ad_shown');
+
+        if (!hasSeenAd && adOverlay) {
+            // Show the pop-up on the first visit
+            adOverlay.style.display = 'flex'; // or 'block', depending on your CSS layout
+            
+            // Mark that the user has now seen the ad so it won't show again
+            localStorage.setItem('veracity_ad_shown', 'true');
+        } else if (adOverlay) {
+            // Hide it immediately if they've already seen it
+            adOverlay.style.display = 'none';
+            if (adVideo) {
+                adVideo.pause();
+            }
+        }
 
         // Function to pause the video stream and hide the popup window cleanly
         function closeAdWindow() {
@@ -501,10 +519,11 @@
         });
 
         // Backup cross icon click event
-        adCloseBtn.addEventListener('click', closeAdWindow);
+        if (adCloseBtn) {
+            adCloseBtn.addEventListener('click', closeAdWindow);
+        }
     });
 </script>
-
 
 
 
