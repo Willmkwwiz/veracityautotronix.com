@@ -215,23 +215,4 @@
         // Render Battery Cards
         function renderBatteries(items) {
             const grid = document.getElementById('battery-grid');
-            grid.innerHTML = '';
-            
-            if (items.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500 text-sm">No batteries match your criteria.</div>`;
-                return;
-            }
-
-            items.forEach(bat => {
-                grid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition rounded-2xl p-4 flex flex-col justify-between space-y-3">
-                        <div>
-                            <div class="flex justify-between items-start">
-                                <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg">${bat.brand}</span>
-                                <span class="text-xs px-2 py-0.5 rounded-full ${bat.in_stock ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}">
-                                    ${bat.in_stock ? 'In Stock' : 'Out of Stock'}
-                                </span>
-                            </div>
-                            <h3 class="text-lg font-bold text-white mt-2">${bat.model_code}</h3>
-                            <p class="text-xs text-slate-400 mt-1">Application: <strong>${bat.application_type}</strong></p>
-                            ${bat.capacity_ah ? `<p class="text-
+            </script>
