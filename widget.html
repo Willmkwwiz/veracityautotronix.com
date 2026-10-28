@@ -99,6 +99,58 @@
 
     </div>
 
+
+        // ==========================================================
+        // 3. SUPABASE CONFIGURATION & FRONTEND CONNECTION
+        // ==========================================================
+        const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co'; // Replace with your Project URL
+        const SUPABASE_ANON_KEY = 'YOUR-ANON-PUBLIC-KEY';         // Replace with your Anon public key
+
+        // Check for URL parameters if embedded via iframe query strings
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeUrl = urlParams.get('spUrl') || SUPABASE_URL;
+        const activeKey = urlParams.get('spKey') || SUPABASE_ANON_KEY;
+
+        let supabaseClient = null;
+        if (activeUrl && activeKey && !activeUrl.includes('YOUR-PROJECT')) {
+            supabaseClient = supabase.createClient(activeUrl, activeKey);
+        }
+
+        // Example function to handle form submissions to Supabase
+        async function submitBooking(formData) {
+            if (!supabaseClient) {
+                console.warn('Supabase client not configured.');
+                return { success: false, message: 'Database not connected.' };
+            }
+
+            const { data, error } = await supabaseClient
+                .from('service_bookings')
+                .insert([
+                    {
+                        full_name: formData.name,
+                        phone_number: formData.phone,
+                        vehicle_model: formData.vehicle,
+                        service_type: formData.service,
+                        preferred_date: formData.date
+                    }
+                ]);
+
+            if (error) {
+                console.error('Booking submission failed:', error.message);
+                return { success: false, message: error.message };
+            }
+            return { success: true, data };
+        }
+
+
+
+
+
+
+
+
+
+    
     <!-- LOGIC SCRIPT -->
     <script>
         // ==========================================================
