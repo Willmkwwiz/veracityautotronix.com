@@ -310,42 +310,44 @@ class VeracityWidget extends HTMLElement {
       }
     });
 
-    // Booking Form Submission to Supabase
+   // Booking Form Submission to Supabase & WhatsApp
     const form = shadow.getElementById('bookingForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const statusDiv = shadow.getElementById('bookingStatus');
-      statusDiv.style.color = '#94a3b8';
-      statusDiv.textContent = 'Submitting your booking...';
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      const formData = new FormData(form);
-      const bookingData = {
-        full_name: formData.get('name'),
-        phone_number: formData.get('phone'),
-        vehicle_model: formData.get('vehicle'),
-        service_type: formData.get('service')
-      };
+        // 1. Collect form inputs
+        const name = shadow.getElementById('clientName')?.value || 'N/A';
+        const phone = shadow.getElementById('clientPhone')?.value || 'N/A';
+        const service = shadow.getElementById('serviceType')?.value || 'General Booking';
+        const notes = shadow.getElementById('bookingNotes')?.value || 'None';
 
-      if (!this.supabaseClient) {
-        statusDiv.style.color = '#ef4444';
-        statusDiv.textContent = 'Database connection error. Please try again later.';
-        return;
-      }
+        // 2. (Optional) Save to your Supabase database first
+        /* 
+        const { data, error } = await supabase.from('bookings').insert([
+          { name, phone, service, notes }
+        ]);
+        */
 
-      const { data, error } = await this.supabaseClient
-        .from('service_bookings')
-        .insert([bookingData]);
+        // 3. Format the WhatsApp message
+        const whatsappNumber = '265999732689'; // Replace with your full WhatsApp number (e.g. 265991234567)
+        
+        const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service.\n\n` +
+                        `*Name:* ${name}\n` +
+                        `*Phone:* ${phone}\n` +
+                        `*Service Requested:* ${service}\n` +
+                        `*Details/Notes:* ${notes}`;
 
-      if (error) {
-        statusDiv.style.color = '#ef4444';
-        statusDiv.textContent = `Error: ${error.message}`;
-      } else {
-        statusDiv.style.color = '#00d26a';
-        statusDiv.textContent = 'Booking submitted successfully! We will contact you shortly.';
+        // 4. Encode text and open WhatsApp
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+        
+        // Opens WhatsApp on mobile or WhatsApp Web on desktop
+        window.open(whatsappUrl, '_blank');
+
+        // Reset form
         form.reset();
-      }
-    });
-  }
+      });
+    }
 }
 
 // Define the custom HTML element
