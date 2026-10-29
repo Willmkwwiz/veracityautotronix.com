@@ -264,6 +264,14 @@ class VeracityWidget extends HTMLElement {
       });
     });
 
+     // Clear results automatically when user changes input text
+    const searchInput = shadow.getElementById('batterySearch');
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.trim() === '') {
+        shadow.getElementById('searchResults').innerHTML = '';
+      }
+    });
+
     // Battery Finder Search Logic
     const searchBtn = shadow.getElementById('searchBtn');
     searchBtn.addEventListener('click', async () => {
