@@ -49,13 +49,21 @@ class VeracityWidget extends HTMLElement {
           padding: 0;
         }
 
-        .widget-container {
-          background: rgba(15, 23, 42, 0.95);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 16px;
-          padding: 20px;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-          backdrop-filter: blur(10px);
+       .widget-container {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+
+  /* Fix scrolling issues */
+  max-height: 85vh;          /* Prevents the widget from expanding past 85% of screen height */
+  overflow-y: auto;          /* Enables internal vertical scrolling */
+  scrollbar-width: thin;     /* Keeps the scrollbar neat */
+  scrollbar-color: #00d26a rgba(30, 41, 59, 0.8);
+}
+          
         }
 
         .tabs-nav {
