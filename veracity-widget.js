@@ -164,7 +164,7 @@ class VeracityWidget extends HTMLElement {
         const notes = shadow.getElementById('bookingNotes')?.value || 'None';
 
         // Add your full WhatsApp number (Country code 265 for Malawi)
-        const whatsappNumber = '265991234567'; 
+        const whatsappNumber = '265999732689'; 
 
         const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service:\n\n` +
                         `*Name:* ${name}\n` +
