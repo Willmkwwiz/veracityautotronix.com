@@ -1025,7 +1025,31 @@ img { max-width: 100%; display: block; }
 .ad-close-btn:hover {
     color: var(--green);
 }
+/* Responsive Video Container */
+.video-wrapper {
+  max-width: 800px;              /* Prevents video from growing too large on desktop */
+  margin: 30px auto;             /* Centers the video section with clean vertical spacing */
+  padding: 0 16px;
+}
 
+.video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;          /* Maintains crisp 16:9 widescreen ratio automatically */
+  border-radius: 16px;           /* Smooth rounded corners matching your widget */
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); /* Floating depth effect */
+  border: 1px solid rgba(255, 255, 255, 0.1);  /* Subtraction border */
+  background: #0f172a;           /* Dark fallback background while loading */
+}
+
+.video-container iframe,
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
 
 
 
