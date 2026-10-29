@@ -20,8 +20,8 @@ class VeracityWidget extends HTMLElement {
   }
 
   initSupabase() {
-    // Replace with your active credentials
-    const SUPABASE_URL = 'https://kfffkzvpyiaxiaviogki.supabase.co/rest/v1';
+    // FIXED: Removed the trailing '/rest/v1' path so the SDK builds proper API endpoints
+    const SUPABASE_URL = 'https://kfffkzvpyiaxiaviogki.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmZmZrenZweWlheGlhdmlvZ2tpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxOTY2ODUsImV4cCI6MjEwODc3MjY4NX0.hqunmCkpa9isA93S_4x9la4q4hIYyhOz39JfvJip3KU';
 
     if (window.supabase) {
@@ -155,6 +155,25 @@ class VeracityWidget extends HTMLElement {
           text-align: center;
         }
 
+        .battery-card {
+          background: rgba(30, 41, 59, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 8px;
+          padding: 12px;
+          margin-top: 10px;
+        }
+
+        .battery-card h4 {
+          color: #00d26a;
+          font-size: 15px;
+          margin-bottom: 4px;
+        }
+
+        .battery-card p {
+          font-size: 13px;
+          color: #94a3b8;
+        }
+
         @media (max-width: 480px) {
           .widget-container {
             padding: 14px;
@@ -235,6 +254,44 @@ class VeracityWidget extends HTMLElement {
         e.target.classList.add('active');
         shadow.getElementById(`tab-${targetTab}`).classList.add('active');
       });
+    });
+
+    // Battery Finder Search Logic
+    const searchBtn = shadow.getElementById('searchBtn');
+    searchBtn.addEventListener('click', async () => {
+      const resultsDiv = shadow.getElementById('searchResults');
+      const query = shadow.getElementById('batterySearch').value.trim();
+      const appFilter = shadow.getElementById('appFilter').value;
+
+      resultsDiv.innerHTML = '<p style="color: #94a3b8; font-size: 13px; text-align: center;">Searching batteries...</p>';
+
+      if (!this.supabaseClient) {
+        resultsDiv.innerHTML = '<p style="color: #ef4444; font-size: 13px;">Database connection not initialized.</p>';
+        return;
+      }
+
+      // Query the 'batteries' table
+      let dbQuery = this.supabaseClient.from('batteries').select('*');
+
+      if (query) {
+        dbQuery = dbQuery.or(`brand.ilike.%${query}%,model.ilike.%${query}%`);
+      }
+
+      const { data, error } = await dbQuery;
+
+      if (error) {
+        resultsDiv.innerHTML = `<p style="color: #ef4444; font-size: 13px;">Error: ${error.message}</p>`;
+      } else if (!data || data.length === 0) {
+        resultsDiv.innerHTML = '<p style="color: #94a3b8; font-size: 13px; text-align: center;">No matching batteries found.</p>';
+      } else {
+        resultsDiv.innerHTML = data.map(bat => `
+          <div class="battery-card">
+            <h4>${bat.brand || 'Battery'} - ${bat.model || ''}</h4>
+            <p><strong>Capacity:</strong> ${bat.capacity || 'N/A'} | <strong>Voltage:</strong> ${bat.voltage || '12V'}</p>
+            <p>${bat.description || bat.notes || ''}</p>
+          </div>
+        `).join('');
+      }
     });
 
     // Booking Form Submission to Supabase
