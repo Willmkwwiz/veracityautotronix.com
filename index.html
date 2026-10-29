@@ -9,10 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726924816519357"
-     crossorigin="anonymous"></script>
-</head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726924816519357" crossorigin="anonymous"></script>
 
+    <!-- Supabase JS Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Veracity Web Component Script -->
+    <script src="veracity-widget.js" defer></script>
+</head>
 
 <body>
 
@@ -38,16 +41,6 @@
         </button>
     </div>
 </nav>
-<!-- Supabase JS Client Library -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- Veracity Web Component Script -->
-<script src="veracity-widget.js" defer></script>
-
-<!-- Native Custom Element Container -->
-<section style="padding: 24px 12px;">
-    <veracity-battery-widget></veracity-battery-widget>
-</section>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -63,10 +56,16 @@
             in Malawi
         </h1>
         <p class="hero-desc">Lilongwe's most trusted source for premium automotive, commercial & motorcycle batteries. Expert testing, charging & installation.</p>
+
+        <!-- ACTION BUTTONS (Added Battery Search Button) -->
         <div class="hero-actions">
-            <a href="services.html" class="btn btn-primary">Explore Services <i class="fas fa-arrow-right"></i></a>
+            <button id="openWidgetBtn" class="btn btn-primary" style="border: none; cursor: pointer;">
+                <i class="fas fa-search"></i> Find Your Battery
+            </button>
+            <a href="services.html" class="btn btn-ghost"><i class="fas fa-tools"></i> Explore Services</a>
             <a href="tel:+265999732689" class="btn btn-ghost"><i class="fas fa-phone"></i> Call Now</a>
         </div>
+
         <div class="hero-stats">
             <div class="hstat"><strong>4</strong><span>Premium Brands</span></div>
             <div class="hstat-div"></div>
@@ -94,6 +93,25 @@
     </div>
     <div class="scroll-hint"><span>Scroll</span><i class="fas fa-chevron-down"></i></div>
 </section>
+
+<!-- ==================================================
+     BATTERY FINDER MODAL POPUP (Hidden by default)
+     ================================================== -->
+<div id="widgetModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box;">
+    <div style="background: #0f172a; width: 100%; max-width: 580px; border-radius: 16px; padding: 24px; position: relative; border: 1px solid #1e293b; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);">
+        
+        <!-- Header Row -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1e293b;">
+            <h3 style="color: #ffffff; margin: 0; font-family: 'Syne', sans-serif; font-size: 1.25rem;">
+                <i class="fas fa-search" style="color: #00d26a;"></i> Battery Search & Booking
+            </h3>
+            <button id="closeWidgetBtn" style="background: transparent; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; line-height: 1;" aria-label="Close modal">&times;</button>
+        </div>
+
+        <!-- Web Component embedded inside modal -->
+        <veracity-battery-widget></veracity-battery-widget>
+    </div>
+</div>
 
 <!-- BRANDS STRIP -->
 <div class="brands-strip">
@@ -443,9 +461,9 @@
                     <span class="dev-label">Crafted by</span>
                     <div class="dev-info">
                         <span class="dev-name"><i class="fas fa-code"></i> William Mkwamba</span>
-                        <a href="willmkwwiz@gmail.com" class="dev-link"><i class="fas fa-envelope"></i> willmkwwiz@gmail.com</a>
-                        <a href="+265980631974" class="dev-link"><i class="fas fa-phone"></i>+265980631974</a>
-                        <a href="+265984664015" class="dev-link"><i class="fas fa-phone"></i>+265984664015</a>
+                        <a href="mailto:willmkwwiz@gmail.com" class="dev-link"><i class="fas fa-envelope"></i> willmkwwiz@gmail.com</a>
+                        <a href="tel:+265980631974" class="dev-link"><i class="fas fa-phone"></i>+265980631974</a>
+                        <a href="tel:+265984664015" class="dev-link"><i class="fas fa-phone"></i>+265984664015</a>
                     </div>
                 </div>
             </div>
@@ -463,24 +481,13 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <script src="script.js"></script>
-<!-- ========================================== -->
 
-
-
-
-    <!-- ================================================
-     POPUP AD SYSTEM WINDOW WITH BLUR DISMISS
-     ================================================ -->
+<!-- POPUP AD SYSTEM WINDOW -->
 <div class="ad-overlay" id="adOverlay">
     <div class="ad-modal-content">
-        <!-- Floating Close Assist button directly above video card frame -->
         <button class="ad-close-btn" id="adCloseBtn" aria-label="Close video ad">&times;</button>
-
-        <!-- Video Box Viewport Layout -->
         <div class="ad-video-wrapper">
-            <!-- added 'playsinline' to ensure autoplay works smoothly on mobile Safari/Chrome -->
             <video id="adVideo" width="100%" height="auto" controls autoplay muted playsinline>
-                <!-- PASTE YOUR EXACT CATBOX LINK IN THE SRC BELOW (Keep the .mp4 extension) -->
                 <source src="https://files.catbox.moe/vqvos9.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -488,60 +495,65 @@
     </div>
 </div>
 
-
+<!-- POPUP AD SCRIPT & BATTERY WIDGET MODAL TOGGLE -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. POPUP VIDEO AD LOGIC ---
         const adOverlay = document.getElementById('adOverlay');
         const adCloseBtn = document.getElementById('adCloseBtn');
         const adVideo = document.getElementById('adVideo');
 
-        // Check if the user has already seen the pop-up during a previous visit
         const hasSeenAd = localStorage.getItem('veracity_ad_shown');
 
         if (!hasSeenAd && adOverlay) {
-            // Show the pop-up on the first visit
-            adOverlay.style.display = 'flex'; // or 'block', depending on your CSS layout
-
-            // Mark that the user has now seen the ad so it won't show again
+            adOverlay.style.display = 'flex';
             localStorage.setItem('veracity_ad_shown', 'true');
         } else if (adOverlay) {
-            // Hide it immediately if they've already seen it
             adOverlay.style.display = 'none';
-            if (adVideo) {
-                adVideo.pause();
-            }
+            if (adVideo) adVideo.pause();
         }
 
-        // Function to pause the video stream and hide the popup window cleanly
         function closeAdWindow() {
             if (adVideo) {
                 adVideo.pause();
                 adVideo.currentTime = 0;
             }
-            if (adOverlay) {
-                adOverlay.style.display = 'none';
-            }
+            if (adOverlay) adOverlay.style.display = 'none';
         }
 
-        // DISMISS VIA BLURRY BACKGROUND: Only closes if clicking directly on the backdrop plane
-        adOverlay.addEventListener('click', (event) => {
-            if (event.target === adOverlay) {
-                closeAdWindow();
-            }
-        });
+        if (adOverlay) {
+            adOverlay.addEventListener('click', (e) => {
+                if (e.target === adOverlay) closeAdWindow();
+            });
+        }
+        if (adCloseBtn) adCloseBtn.addEventListener('click', closeAdWindow);
 
-        // Backup cross icon click event
-        if (adCloseBtn) {
-            adCloseBtn.addEventListener('click', closeAdWindow);
+        // --- 2. BATTERY SEARCH WIDGET MODAL LOGIC ---
+        const openWidgetBtn = document.getElementById('openWidgetBtn');
+        const closeWidgetBtn = document.getElementById('closeWidgetBtn');
+        const widgetModal = document.getElementById('widgetModal');
+
+        if (openWidgetBtn && widgetModal) {
+            openWidgetBtn.addEventListener('click', () => {
+                widgetModal.style.display = 'flex';
+            });
+        }
+
+        if (closeWidgetBtn && widgetModal) {
+            closeWidgetBtn.addEventListener('click', () => {
+                widgetModal.style.display = 'none';
+            });
+        }
+
+        if (widgetModal) {
+            widgetModal.addEventListener('click', (e) => {
+                if (e.target === widgetModal) {
+                    widgetModal.style.display = 'none';
+                }
+            });
         }
     });
 </script>
 
-
-
-
-
-
-
-  </body>
+</body>
 </html>
