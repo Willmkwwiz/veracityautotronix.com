@@ -21,8 +21,8 @@ class VeracityWidget extends HTMLElement {
 
   initSupabase() {
     // Replace with your active credentials
-    const SUPABASE_URL = 'https://kfffkzvpyiaxiavio.supabase.co';
-    const SUPABASE_ANON_KEY = 'YOUR_ACTUAL_SUPABASE_ANON_KEY';
+    const SUPABASE_URL = 'https://kfffkzvpyiaxiaviogki.supabase.co/rest/v1/';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmZmZrenZweWlheGlhdmlvZ2tpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxOTY2ODUsImV4cCI6MjEwODc3MjY4NX0.hqunmCkpa9isA93S_4x9la4q4hIYyhOz39JfvJip3KU';
 
     if (window.supabase) {
       this.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
