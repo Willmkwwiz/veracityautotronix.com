@@ -85,6 +85,21 @@ class VeracityWidget extends HTMLElement {
         button.submit-btn:hover {
           background: #1da851;
         }
+
+        .battery-card {
+          background: #1e293b;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 12px;
+          margin-top: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .battery-card:hover {
+          border-color: #2563eb;
+          background: #26334d;
+        }
       </style>
 
       <div class="widget-container">
@@ -116,7 +131,7 @@ class VeracityWidget extends HTMLElement {
               <option value="Solar / Inverter Setup">Solar / Inverter Setup</option>
             </select>
 
-            <label>Notes / Vehicle Details</label>
+            <label>Notes / Vehicle Details (Selected Battery will appear here)</label>
             <textarea id="bookingNotes" rows="3" placeholder="Car model, location, etc."></textarea>
 
             <button type="submit" class="submit-btn">Send Booking via WhatsApp</button>
@@ -142,7 +157,7 @@ class VeracityWidget extends HTMLElement {
       });
     });
 
-    // 2. Battery Search Logic & Sample Inventory
+    // 2. Battery Search Logic & Inventory
     const batteryInventory = [
       { model: 'N70', type: 'Conventional / Heavy Duty', capacity: '75Ah', vehicles: 'Toyota Hilux, Land Cruiser, Nissan Hardbody' },
       { model: 'N50z', type: 'Conventional', capacity: '50Ah', vehicles: 'Toyota Corolla, Toyota Vitz, Honda Fit' },
@@ -171,8 +186,11 @@ class VeracityWidget extends HTMLElement {
 
         if (matches.length > 0) {
           searchResults.innerHTML = matches.map(battery => `
-            <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-top: 8px;">
-              <div style="font-weight: bold; color: #60a5fa; font-size: 15px;">${battery.model} (${battery.capacity})</div>
+            <div class="battery-card" data-model="${battery.model}" data-capacity="${battery.capacity}" data-type="${battery.type}">
+              <div style="font-weight: bold; color: #60a5fa; font-size: 15px; display: flex; justify-content: space-between;">
+                <span>${battery.model} (${battery.capacity})</span>
+                <span style="font-size: 12px; background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px;">Tap to Select ➔</span>
+              </div>
               <div style="font-size: 13px; color: #cbd5e1; margin-top: 4px;">Type: ${battery.type}</div>
               <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Fits: ${battery.vehicles}</div>
             </div>
@@ -183,6 +201,34 @@ class VeracityWidget extends HTMLElement {
               No matching batteries found. Try searching another model.
             </div>
           `;
+        }
+      });
+
+      // Handle clicking a battery result card to auto-fill booking form
+      searchResults.addEventListener('click', (e) => {
+        const card = e.target.closest('.battery-card');
+        if (!card) return;
+
+        const model = card.getAttribute('data-model');
+        const capacity = card.getAttribute('data-capacity');
+        const type = card.getAttribute('data-type');
+
+        // Pre-fill the booking notes with the selected battery details
+        const notesField = shadow.getElementById('bookingNotes');
+        if (notesField) {
+          notesField.value = `Inquiring for Battery: ${model} (${capacity}, ${type})`;
+        }
+
+        // Automatically set service type to Battery Replacement
+        const serviceSelect = shadow.getElementById('serviceType');
+        if (serviceSelect) {
+          serviceSelect.value = 'Battery Replacement';
+        }
+
+        // Switch to the booking tab automatically
+        const bookingTabBtn = shadow.querySelector('[data-tab="booking"]');
+        if (bookingTabBtn) {
+          bookingTabBtn.click();
         }
       });
     }
@@ -198,13 +244,14 @@ class VeracityWidget extends HTMLElement {
         const service = shadow.getElementById('serviceType')?.value || 'General Booking';
         const notes = shadow.getElementById('bookingNotes')?.value || 'None';
 
-        const whatsappNumber = '265999732689'; // Update with your actual WhatsApp phone number
+        // Update with your actual WhatsApp phone number (country code 265 without +)
+        const whatsappNumber = '265999732689'; 
 
-        const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service:\n\n` +
+        const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service / order a battery:\n\n` +
                         `*Name:* ${name}\n` +
                         `*Phone:* ${phone}\n` +
                         `*Service:* ${service}\n` +
-                        `*Notes:* ${notes}`;
+                        `*Details/Battery:* ${notes}`;
 
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
