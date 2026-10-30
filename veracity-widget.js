@@ -129,7 +129,7 @@ class VeracityWidget extends HTMLElement {
   attachEventListeners() {
     const shadow = this.shadowRoot;
 
-    // 1. Tab switching
+    // 1. Tab switching logic
     const tabs = shadow.querySelectorAll('.tab-btn');
     tabs.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -142,12 +142,47 @@ class VeracityWidget extends HTMLElement {
       });
     });
 
-    // 2. Clear search when empty
+    // 2. Battery Search Logic & Sample Inventory
+    const batteryInventory = [
+      { model: 'N70', type: 'Conventional / Heavy Duty', capacity: '75Ah', vehicles: 'Toyota Hilux, Land Cruiser, Nissan Hardbody' },
+      { model: 'N50z', type: 'Conventional', capacity: '50Ah', vehicles: 'Toyota Corolla, Toyota Vitz, Honda Fit' },
+      { model: 'NS40', type: 'Compact Japanese Type', capacity: '35Ah', vehicles: 'Nissan March, Suzuki Swift' },
+      { model: '658', type: 'DIN Standard', capacity: '60Ah', vehicles: 'VW Golf, Polo, Audi' },
+      { model: 'DIN66', type: 'Heavy Duty DIN', capacity: '66Ah', vehicles: 'Ford Ranger, Mercedes-Benz, BMW' },
+      { model: 'AGM 95', type: 'Start-Stop AGM', capacity: '95Ah', vehicles: 'Modern European SUVs & Sedans' }
+    ];
+
     const searchInput = shadow.getElementById('batterySearch');
-    if (searchInput) {
+    const searchResults = shadow.getElementById('searchResults');
+
+    if (searchInput && searchResults) {
       searchInput.addEventListener('input', () => {
-        if (searchInput.value.trim() === '') {
-          shadow.getElementById('searchResults').innerHTML = '';
+        const query = searchInput.value.toLowerCase().trim();
+
+        if (query === '') {
+          searchResults.innerHTML = '';
+          return;
+        }
+
+        const matches = batteryInventory.filter(item => 
+          item.model.toLowerCase().includes(query) || 
+          item.vehicles.toLowerCase().includes(query)
+        );
+
+        if (matches.length > 0) {
+          searchResults.innerHTML = matches.map(battery => `
+            <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-top: 8px;">
+              <div style="font-weight: bold; color: #60a5fa; font-size: 15px;">${battery.model} (${battery.capacity})</div>
+              <div style="font-size: 13px; color: #cbd5e1; margin-top: 4px;">Type: ${battery.type}</div>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Fits: ${battery.vehicles}</div>
+            </div>
+          `).join('');
+        } else {
+          searchResults.innerHTML = `
+            <div style="background: #1e293b; border-radius: 8px; padding: 12px; margin-top: 8px; color: #94a3b8; font-size: 13px; text-align: center;">
+              No matching batteries found. Try searching another model.
+            </div>
+          `;
         }
       });
     }
@@ -163,8 +198,7 @@ class VeracityWidget extends HTMLElement {
         const service = shadow.getElementById('serviceType')?.value || 'General Booking';
         const notes = shadow.getElementById('bookingNotes')?.value || 'None';
 
-        // Add your full WhatsApp number (Country code 265 for Malawi)
-        const whatsappNumber = '265999732689'; 
+        const whatsappNumber = '265991234567'; // Update with your actual WhatsApp phone number
 
         const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service:\n\n` +
                         `*Name:* ${name}\n` +
