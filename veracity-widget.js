@@ -198,7 +198,7 @@ class VeracityWidget extends HTMLElement {
         const service = shadow.getElementById('serviceType')?.value || 'General Booking';
         const notes = shadow.getElementById('bookingNotes')?.value || 'None';
 
-        const whatsappNumber = '265991234567'; // Update with your actual WhatsApp phone number
+        const whatsappNumber = '265999732689'; // Update with your actual WhatsApp phone number
 
         const message = `Hello Veracity Autotronix! 👋\n\nI would like to book a service:\n\n` +
                         `*Name:* ${name}\n` +
