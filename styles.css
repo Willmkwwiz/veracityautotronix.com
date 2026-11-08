@@ -439,13 +439,15 @@ img { max-width: 100%; display: block; }
 
 .testimonials-track {
     display: flex; gap: 1.5rem; margin-top: 2rem;
-    overflow: hidden; position: relative;
+    width: 100%; position: relative;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .testi-card {
     background: var(--white); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 2rem;
-    min-width: calc(50% - 0.75rem); transition: var(--transition);
-    flex-shrink: 0;
+    flex: 0 0 calc(50% - 0.75rem);
+    box-sizing: border-box;
+    transition: var(--transition);
 }
 .testi-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
 .testi-card p { color: var(--text-2); font-style: italic; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.97rem; }
@@ -959,11 +961,9 @@ img { max-width: 100%; display: block; }
     .section-title { font-size: 1.8rem; }
     .brand-pills { gap: 0.5rem; }
     .brands-inner { flex-direction: column; align-items: flex-start; }
+}
 
-
-
-
-   /* ================================================
+/* ================================================
    VIDEO AD SYSTEM & GLASS BACKDROP FILTER
    ================================================ */
 .ad-overlay {
@@ -972,25 +972,25 @@ img { max-width: 100%; display: block; }
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(10, 15, 13, 0.85); /* Deep tint using your var(--dark) */
-    backdrop-filter: blur(12px);               /* Beautiful frosted glass effect */
+    background-color: rgba(10, 15, 13, 0.85);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 99999;                            /* Ensures display on top of absolute layout elements */
+    z-index: 99999;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;                           /* Signals backdrop can be tapped to quit */
+    cursor: pointer;
     transition: var(--transition);
 }
 
 .ad-modal-content {
     background: var(--white);
-    padding: 1rem;                             /* Slim styling profile around media edge */
-    border-radius: var(--radius);              /* Matches your layout's 16px radius asset */
-    max-width: 720px;                          /* Widescreen presentation size profile */
+    padding: 1rem;
+    border-radius: var(--radius);
+    max-width: 720px;
     width: 90%;
     position: relative;
-    cursor: default;                           /* Overrides pointer logic so video player works natively */
+    cursor: default;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border);
     animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
@@ -999,8 +999,8 @@ img { max-width: 100%; display: block; }
 .ad-video-wrapper {
     width: 100%;
     overflow: hidden;
-    border-radius: var(--radius-sm);           /* Rounded player edges */
-    background: #000;                          /* Prevent clipping flashing colors */
+    border-radius: var(--radius-sm);
+    background: #000;
     display: block;
 }
 
@@ -1010,27 +1010,17 @@ img { max-width: 100%; display: block; }
     height: auto;
 }
 
-/* Accessible Manual Close Button fallback hook */
 .ad-close-btn {
     position: absolute;
-    top: -2.5rem;                              /* Floats clean button right outside video boundary frame */
+    top: -2.5rem;
     right: 0;
     background: none;
     border: none;
     font-size: 2.2rem;
     cursor: pointer;
-    color: var(--white);                       /* White contrast color over dark overlay grid background */
+    color: var(--white);
     transition: var(--transition);
 }
-.ad-close-btn:hover {
+.ad-testi-close-btn:hover {
     color: var(--green);
 }
-
-
-
-
-
-
-
-
-
