@@ -1,5 +1,5 @@
 /* ================================================
-   VERACITY AUTOTRONIX – WILLARD BATTERY CENTER
+   VERACITY AUTOTRONIX â€“ WILLARD BATTERY CENTER
    Modern, Bold, Industrial-Green Aesthetic
    Fonts: Syne (headings) + DM Sans (body)
    ================================================ */
@@ -324,7 +324,7 @@ img { max-width: 100%; display: block; }
     border-radius: var(--radius); overflow: hidden;
     transition: var(--transition); display: flex; flex-direction: column;
 }
-.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(var(--c), 0.3); }
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--c, var(--green)); }
 
 .product-stripe { height: 4px; width: 100%; }
 
@@ -332,7 +332,7 @@ img { max-width: 100%; display: block; }
     font-size: 2.5rem; padding: 1.5rem 1.5rem 0; opacity: 0.9;
 }
 
-.product-body { padding: 1rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+.product-body { padding: 1.25rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
 .product-brand {
     font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 0.4rem;
@@ -349,6 +349,59 @@ img { max-width: 100%; display: block; }
 .product-specs li:last-child { border-bottom: none; }
 .product-specs span { color: var(--text-3); }
 .product-specs strong { color: var(--text); font-weight: 600; }
+
+/* Product image icons (index.html product cards) */
+.product-icon-img {
+    padding: 0;
+    height: 195px;
+    width: 100%;
+    background: #eef4f0;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    position: relative;
+}
+.product-bat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    padding: 0;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.product-card:hover .product-bat-img {
+    transform: scale(1.06);
+}
+
+/* Responsive Ad Container */
+.ad-wrapper {
+    margin-top: 2.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.ad-container {
+    width: 100%;
+    max-width: 728px;
+    min-height: 90px;
+    background: var(--white);
+    border: 1px dashed rgba(0,166,81,0.28);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.ad-placeholder {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
 
 /* ========================= SERVICES PREVIEW ========================= */
 .services-preview { background: var(--white); }
@@ -753,7 +806,7 @@ img { max-width: 100%; display: block; }
 .products-showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
 .psc { background: var(--off-white); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; transition: var(--transition); }
 .psc:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.psc-header { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
+.psc-header { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
 .psc-body { padding: 1.2rem; }
 .psc-body h4 { font-size: 1rem; color: var(--text); margin-bottom: 0.8rem; }
 .psc-specs { list-style: none; }
@@ -762,43 +815,21 @@ img { max-width: 100%; display: block; }
 .psc-specs span { color: var(--text-3); }
 .psc-specs strong { color: var(--text); }
 
-/* Product image icons (index.html product cards) */
-.product-icon-img {
-    padding: 0;
-    height: 170px;
-    background: var(--off-white);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.product-bat-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    padding: 1rem 1.25rem;
-    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.product-card:hover .product-bat-img {
-    transform: scale(1.07);
-}
-
 /* Product showcase image headers (services.html) */
 .psc-header-img {
     position: relative;
     overflow: hidden;
+    padding: 0;
 }
 .psc-bat-img {
-    height: 88px;
-    width: auto;
-    max-width: 92%;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.4));
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .psc:hover .psc-bat-img {
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
 
 /* Additional services cards */
@@ -1021,6 +1052,7 @@ img { max-width: 100%; display: block; }
     color: var(--white);
     transition: var(--transition);
 }
+.ad-close-btn:hover,
 .ad-testi-close-btn:hover {
     color: var(--green);
-}
+   }
