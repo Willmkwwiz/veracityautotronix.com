@@ -1,5 +1,5 @@
 /* ================================================
-   VERACITY AUTOTRONIX â€“ WILLARD BATTERY CENTER
+   VERACITY AUTOTRONIX – WILLARD BATTERY CENTER
    Modern, Bold, Industrial-Green Aesthetic
    Fonts: Syne (headings) + DM Sans (body)
    ================================================ */
@@ -318,11 +318,13 @@ img { max-width: 100%; display: block; }
 
 .products-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;
+    align-items: stretch;
 }
 .product-card {
     background: var(--white); border: 1px solid var(--border);
     border-radius: var(--radius); overflow: hidden;
     transition: var(--transition); display: flex; flex-direction: column;
+    height: 100%;
 }
 .product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--c, var(--green)); }
 
@@ -350,12 +352,12 @@ img { max-width: 100%; display: block; }
 .product-specs span { color: var(--text-3); }
 .product-specs strong { color: var(--text); font-weight: 600; }
 
-/* Product image icons (index.html product cards) */
+/* Product image icons (index.html & services.html product cards) */
 .product-icon-img {
-    padding: 0;
-    height: 195px;
+    padding: 14px;
+    aspect-ratio: 4 / 3;
     width: 100%;
-    background: #eef4f0;
+    background: var(--white);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
     display: flex;
@@ -367,13 +369,15 @@ img { max-width: 100%; display: block; }
 .product-bat-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     object-position: center;
     padding: 0;
     transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .product-card:hover .product-bat-img {
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 
 /* Responsive Ad Container */
@@ -656,7 +660,7 @@ img { max-width: 100%; display: block; }
 
 /* ========================= ABOUT PAGE ========================= */
 .page-hero {
-    background: var(--dark); padding: 160px 24px 80px;
+    background: var(--dark); padding: 132px 24px 72px;
     text-align: center; position: relative; overflow: hidden;
 }
 .page-hero-bg {
@@ -765,8 +769,221 @@ img { max-width: 100%; display: block; }
 .stat-item p { color: rgba(255,255,255,0.75); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* ========================= SERVICES PAGE ========================= */
-.services-grid-full { display: flex; flex-direction: column; gap: 2rem; }
+.services-grid-full {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
 
 .service-block {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden; transition: var(--transition);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.service-block:hover {
+    border-color: rgba(0, 166, 81, 0.35);
+    box-shadow: var(--shadow-lg);
+}
+
+.service-block-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.75rem 2rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+.sb-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--green-ultra);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.service-block-header h3 {
+    font-size: 1.35rem;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+}
+
+.service-block-header p {
+    color: var(--text-2);
+    font-size: 0.94rem;
+    margin: 0;
+}
+
+.service-block-body {
+    padding: 2rem;
+}
+
+/* 4-Step Process Grid */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+
+.step-item {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.step-item:hover {
+    border-color: rgba(0, 166, 81, 0.35);
+    transform: translateY(-2px);
+}
+
+.step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step-info h5 {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+}
+
+.step-info p {
+    font-size: 0.88rem;
+    color: var(--text-2);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Additional Services Grid */
+.add-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.add-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    transition: var(--transition);
+}
+
+.add-card:hover {
+    border-color: rgba(0, 166, 81, 0.35);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.add-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(0, 166, 81, 0.12);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+}
+
+.add-card h4 {
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 0.45rem;
+}
+
+.add-card p {
+    font-size: 0.88rem;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Floating WhatsApp Button */
+.wa-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    z-index: 999;
+    transition: var(--transition);
+}
+
+.wa-float:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: #1ebe5d;
+}
+
+.wa-tooltip {
+    position: absolute;
+    right: 68px;
+    background: var(--dark);
+    color: #fff;
+    padding: 0.45rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.wa-float:hover .wa-tooltip {
+    opacity: 1;
+}
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 960px) {
+    .hero { flex-direction: column; text-align: center; padding-top: 110px; gap: 2.5rem; }
+    .hero-desc { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .services-preview-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-story-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .testi-card { flex: 0 0 100%; }
+}
+
+@media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .service-block-header { flex-direction: column; align-items: flex-start; padding: 1.4rem; }
+    .service-block-body { padding: 1.4rem; }
+}
