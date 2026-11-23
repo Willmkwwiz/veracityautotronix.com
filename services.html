@@ -11,18 +11,251 @@
     <link rel="stylesheet" href="styles.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726924816519357"
      crossorigin="anonymous"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-34JRQ8Z8X9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-34JRQ8Z8X9');
+    </script>
+
+    <style>
+        .page-hero {
+            background: var(--dark, #0a0f0d);
+            padding: 120px 24px 64px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            margin: 0 auto;
+            color: #fff;
+        }
+        .page-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 166, 81, 0.16);
+            border: 1px solid rgba(0, 166, 81, 0.35);
+            color: #4ec476;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-hero h1 {
+            color: #fff;
+            margin-bottom: 0.85rem;
+        }
+        .page-hero p {
+            color: rgba(255, 255, 255, 0.72);
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        .services-grid-full {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .service-block {
+            background: #ffffff;
+            border: 1px solid rgba(0, 166, 81, 0.14);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+        .service-block-header {
+            display: flex;
+            align-items: center;
+            gap: 1.15rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 166, 81, 0.12);
+            background: #ffffff;
+        }
+        .sb-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #e6f7ee;
+            color: #00A651;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .service-block-header h3 {
+            font-size: 1.3rem;
+            color: #1a2620;
+            margin-bottom: 0.25rem;
+        }
+        .service-block-header p {
+            color: #4a5f52;
+            font-size: 0.92rem;
+            margin: 0;
+        }
+        .service-block-body {
+            padding: 1.75rem 2rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.15rem;
+        }
+        .step-item {
+            background: #f4f8f5;
+            border: 1px solid rgba(0, 166, 81, 0.14);
+            border-radius: 10px;
+            padding: 1.15rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+        }
+        .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #00A651;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-info h5 {
+            font-size: 0.98rem;
+            color: #1a2620;
+            margin-bottom: 0.3rem;
+        }
+        .step-info p {
+            font-size: 0.86rem;
+            color: #4a5f52;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .service-block-body .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            align-items: start;
+        }
+        .service-block-body .product-card {
+            min-width: 0;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-icon-img {
+            padding: 12px;
+            aspect-ratio: 4 / 3;
+            max-height: 220px;
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 166, 81, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .product-bat-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .add-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.15rem;
+        }
+        .add-card {
+            background: #f4f8f5;
+            border: 1px solid rgba(0, 166, 81, 0.14);
+            border-radius: 10px;
+            padding: 1.35rem;
+        }
+        .add-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(0, 166, 81, 0.12);
+            color: #00A651;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 0.85rem;
+        }
+        .add-card h4 {
+            font-size: 1rem;
+            color: #1a2620;
+            margin-bottom: 0.35rem;
+        }
+        .add-card p {
+            font-size: 0.86rem;
+            color: #4a5f52;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .wa-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: #25D366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+            z-index: 999;
+        }
+        .wa-tooltip {
+            position: absolute;
+            right: 66px;
+            background: #0a0f0d;
+            color: #fff;
+            padding: 0.4rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .wa-float:hover .wa-tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .service-block-header,
+            .service-block-body {
+                padding: 1.25rem;
+            }
+        }
+    </style>
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-34JRQ8Z8X9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-34JRQ8Z8X9');
-</script>
-    
 <body>
 
 <!-- NAV -->
@@ -92,7 +325,7 @@
                         <div class="step-item">
                             <div class="step-num">3</div>
                             <div class="step-info">
-                                <h5>Load & CCA Testing</h5>
+                                <h5>Load &amp; CCA Testing</h5>
                                 <p>Apply load equal to half CCA rating. Voltage must stay above 9.6V during test.</p>
                             </div>
                         </div>
@@ -203,12 +436,12 @@
                             <div class="product-body">
                                 <div class="product-brand">Willard Heavy Duty Batteries</div>
                                 <h3>Heavy Duty</h3>
-                                <p>South African-made since 1967. Built for harsh African conditions — commercial trucks, agriculture & more.</p>
+                                <p>South African-made since 1967. Built for harsh African conditions — commercial trucks, agriculture &amp; more.</p>
                                 <ul class="product-specs">
                                     <li><span>Voltage</span><strong>12V</strong></li>
                                     <li><span>Type</span><strong>Heavy Duty</strong></li>
                                     <li><span>Since</span><strong>1967</strong></li>
-                                    <li><span>Use</span><strong>Commercial & Agri</strong></li>
+                                    <li><span>Use</span><strong>Commercial &amp; Agri</strong></li>
                                 </ul>
                             </div>
                         </div>
@@ -299,9 +532,9 @@
                             <span class="logo-sub">Willard Battery Center</span>
                         </div>
                     </div>
-                    <p>Your trusted partner for premium automotive batteries in Malawi. Authorized dealer of Willard, GP, SABAT & TOPLITE.</p>
+                    <p>Your trusted partner for premium automotive batteries in Malawi. Authorized dealer of Willard, GP, SABAT &amp; TOPLITE.</p>
                     <div class="footer-socials">
-                        <a href="https://wa.me/265999732689" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/265999732689" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
@@ -330,7 +563,7 @@
                         <li><i class="fas fa-map-marker-alt"></i><span>Off Paul Kagame Road, Area 4, Lilongwe, Malawi</span></li>
                         <li><i class="fas fa-phone"></i><a href="tel:+265999732689">+265 999 732 689</a></li>
                         <li><i class="fas fa-phone"></i><a href="tel:+265888880361">+265 888 880 361</a></li>
-                        <li><i class="fas fa-envelope"></i><a href="mailto:info@veracityautotronix.com">veracityautotronix@gmail.com</a></li>
+                        <li><i class="fas fa-envelope"></i><a href="mailto:veracityautotronix@gmail.com">veracityautotronix@gmail.com</a></li>
                         <li><i class="fas fa-clock"></i><span>Mon–Fri: 8am–5pm | Sat: 8:30am–3pm</span></li>
                     </ul>
                 </div>
@@ -355,7 +588,7 @@
     </div>
 </footer>
 
-<a href="https://wa.me/265999732689" class="wa-float" target="_blank" title="Chat on WhatsApp">
+<a href="https://wa.me/265999732689" class="wa-float" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp">
     <i class="fab fa-whatsapp"></i>
     <span class="wa-tooltip">Chat with us!</span>
 </a>
