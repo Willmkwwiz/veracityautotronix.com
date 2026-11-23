@@ -703,11 +703,6 @@ img { max-width: 100%; display: block; }
 }
 .dev-link:hover i { color: var(--green-light); }
 
-@media (max-width: 768px) {
-    .footer-bottom-inner { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
-    .dev-info { justify-content: center; }
-}
-
 /* ========================= ABOUT PAGE ========================= */
 .page-hero {
     background: var(--dark); padding: 132px 24px 72px;
@@ -1251,8 +1246,9 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 768px) {
     .nav-links, .nav-cta { display: none; }
-    .nav-links.open {
-        display: flex;
+
+    .navbar .nav-links.open {
+        display: flex !important;
         flex-direction: column;
         position: fixed;
         top: 72px;
@@ -1263,17 +1259,26 @@ img { max-width: 100%; display: block; }
         gap: 0.25rem;
         border-bottom: 1px solid var(--border);
         box-shadow: var(--shadow-lg);
-        z-index: 999;
+        z-index: 9999;
     }
-    .nav-links.open .nav-link {
+
+    .navbar .nav-links.open li {
+        width: 100%;
+    }
+
+    .navbar .nav-links.open .nav-link {
         display: block;
+        width: 100%;
         padding: 0.75rem 1rem;
         border-radius: var(--radius-sm);
     }
+
     .hamburger { display: flex; }
     .form-row { grid-template-columns: 1fr; }
     .hours-cards { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom-inner { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
+    .dev-info { justify-content: center; }
     .service-block-header { flex-direction: column; align-items: flex-start; padding: 1.4rem; }
     .service-block-body { padding: 1.4rem; }
 }
