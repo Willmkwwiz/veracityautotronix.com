@@ -96,6 +96,11 @@ class VeracityWidget extends HTMLElement {
           transition: all 0.2s ease;
         }
 
+        button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .battery-card:focus-visible {
+          outline: 3px solid #F5C842;
+          outline-offset: 2px;
+        }
+
         .battery-card:hover {
           border-color: #2563eb;
           background: #26334d;
@@ -104,37 +109,37 @@ class VeracityWidget extends HTMLElement {
 
       <div class="widget-container">
         <div class="tabs">
-          <button class="tab-btn active" data-tab="finder">Battery Finder</button>
-          <button class="tab-btn" data-tab="booking">Book Service</button>
+          <button type="button" class="tab-btn active" data-tab="finder">Battery Finder</button>
+          <button type="button" class="tab-btn" data-tab="booking">Book Service</button>
         </div>
 
         <!-- Tab 1: Battery Finder -->
         <div class="tab-content active" id="tab-finder">
-          <label for="batterySearch">Search Battery Model</label>
-          <input type="text" id="batterySearch" placeholder="e.g. N70, 658, AGM..." />
-          <div id="searchResults"></div>
+          <label for="batterySearch">Search by battery model or vehicle</label>
+          <input type="text" id="batterySearch" placeholder="e.g. N70, 658, Hilux..." autocomplete="off" />
+          <div id="searchResults" aria-live="polite"></div>
         </div>
 
         <!-- Tab 2: Booking -->
         <div class="tab-content" id="tab-booking">
           <form id="bookingForm">
-            <label>Your Name</label>
-            <input type="text" id="clientName" placeholder="Enter your full name" required />
+            <label for="clientName">Your name</label>
+            <input type="text" id="clientName" placeholder="Enter your full name" autocomplete="name" required />
 
-            <label>Phone Number</label>
-            <input type="tel" id="clientPhone" placeholder="099X XXX XXX" required />
+            <label for="clientPhone">Phone number</label>
+            <input type="tel" id="clientPhone" placeholder="+265 xxx xxx xxx" autocomplete="tel" required />
 
-            <label>Service Needed</label>
+            <label for="serviceType">Service needed</label>
             <select id="serviceType">
               <option value="Battery Replacement">Battery Replacement</option>
               <option value="Diagnostics">Electrical Diagnostics</option>
               <option value="Solar / Inverter Setup">Solar / Inverter Setup</option>
             </select>
 
-            <label>Notes / Vehicle Details (Selected Battery will appear here)</label>
+            <label for="bookingNotes">Notes / vehicle details (your selected battery appears here)</label>
             <textarea id="bookingNotes" rows="3" placeholder="Car model, location, etc."></textarea>
 
-            <button type="submit" class="submit-btn">Send Booking via WhatsApp</button>
+            <button type="submit" class="submit-btn">Send booking on WhatsApp</button>
           </form>
         </div>
       </div>
@@ -186,7 +191,7 @@ class VeracityWidget extends HTMLElement {
 
         if (matches.length > 0) {
           searchResults.innerHTML = matches.map(battery => `
-            <div class="battery-card" data-model="${battery.model}" data-capacity="${battery.capacity}" data-type="${battery.type}">
+            <div class="battery-card" tabindex="0" role="button" data-model="${battery.model}" data-capacity="${battery.capacity}" data-type="${battery.type}">
               <div style="font-weight: bold; color: #60a5fa; font-size: 15px; display: flex; justify-content: space-between;">
                 <span>${battery.model} (${battery.capacity})</span>
                 <span style="font-size: 12px; background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px;">Tap to Select ➔</span>
@@ -205,7 +210,7 @@ class VeracityWidget extends HTMLElement {
       });
 
       // Handle clicking a battery result card to auto-fill booking form
-      searchResults.addEventListener('click', (e) => {
+      const selectCard = (e) => {
         const card = e.target.closest('.battery-card');
         if (!card) return;
 
@@ -230,6 +235,10 @@ class VeracityWidget extends HTMLElement {
         if (bookingTabBtn) {
           bookingTabBtn.click();
         }
+      };
+      searchResults.addEventListener('click', selectCard);
+      searchResults.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCard(e); }
       });
     }
 

@@ -2,230 +2,12 @@
 // VERACITY AUTOTRONIX - MAIN JAVASCRIPT
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
+    'use strict';
 
-    // ===== PROGRESS BAR =====
-    const progressBar = document.getElementById('progressBar');
-    if (progressBar) {
-        window.addEventListener('scroll', () => {
-            const h = document.documentElement;
-            const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-            progressBar.style.width = scrolled + '%';
-        });
-    }
-
-    // ===== NAVBAR SCROLL =====
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-    }
-
-    // ===== MOBILE HAMBURGER =====
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            hamburger.classList.toggle('open');
-            navLinks.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!navbar.contains(e.target)) {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('open');
-            }
-        });
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('open');
-            }
-        });
-    }
-
-    // ===== REVEAL ON SCROLL =====
-    const reveals = document.querySelectorAll('.reveal');
-    if (reveals.length) {
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    // Stagger siblings
-                    const siblings = entry.target.parentElement.querySelectorAll('.reveal:not(.visible)');
-                    siblings.forEach((el, idx) => {
-                        setTimeout(() => el.classList.add('visible'), idx * 80);
-                    });
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        reveals.forEach(el => revealObserver.observe(el));
-    }
-
-    // ===== COUNTER ANIMATION =====
-    const counters = document.querySelectorAll('[data-target]');
-    if (counters.length) {
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const target = parseInt(entry.target.getAttribute('data-target'));
-                    const suffix = target >= 100 ? '+' : '';
-                    let count = 0;
-                    const step = Math.max(target / 60, 1);
-                    const timer = setInterval(() => {
-                        count = Math.min(count + step, target);
-                        entry.target.textContent = Math.floor(count) + suffix;
-                        if (count >= target) clearInterval(timer);
-                    }, 20);
-                    counterObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        counters.forEach(el => counterObserver.observe(el));
-    }
-
-    // ===== TESTIMONIALS CAROUSEL =====
-    const track = document.getElementById('testiTrack');
-    const prevBtn = document.getElementById('testPrev');
-    const nextBtn = document.getElementById('testNext');
-    const dotsContainer = document.getElementById('testiDots');
-
-    if (track && prevBtn && nextBtn) {
-        const cards = Array.from(track.children);
-        let current = 0;
-        let autoPlay;
-
-        // Build dots
-        cards.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => goTo(i));
-            dotsContainer.appendChild(dot);
-        });
-
-        function getVisible() {
-            return window.innerWidth <= 768 ? 1 : 2;
-        }
-
-        function goTo(index) {
-            const visible = getVisible();
-            const max = cards.length - visible;
-            current = Math.max(0, Math.min(index, max));
-            const cardWidth = cards[0].offsetWidth + 24; // gap
-            track.style.transform = `translateX(-${current * cardWidth}px)`;
-            track.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
-            dotsContainer.querySelectorAll('.testi-dot').forEach((d, i) => {
-                d.classList.toggle('active', i === current);
-            });
-        }
-
-        prevBtn.addEventListener('click', () => { goTo(current - 1); resetAutoplay(); });
-        nextBtn.addEventListener('click', () => {
-            const visible = getVisible();
-            goTo(current + 1 > cards.length - visible ? 0 : current + 1);
-            resetAutoplay();
-        });
-
-        function startAutoplay() {
-            autoPlay = setInterval(() => {
-                const visible = getVisible();
-                goTo(current + 1 > cards.length - visible ? 0 : current + 1);
-            }, 5000);
-        }
-
-        function resetAutoplay() {
-            clearInterval(autoPlay);
-            startAutoplay();
-        }
-
-        startAutoplay();
-        window.addEventListener('resize', () => goTo(0));
-    }
-
-    // ===== CONTACT FORM =====
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const originalHtml = btn.innerHTML;
-
-            const nameVal    = document.getElementById('name').value.trim();
-            const phoneVal   = document.getElementById('phone').value.trim();
-            const emailVal   = document.getElementById('email').value.trim();
-            const serviceEl  = document.getElementById('service');
-            const serviceVal = serviceEl.options[serviceEl.selectedIndex].text !== 'Select a service...'
-                ? serviceEl.options[serviceEl.selectedIndex].text : 'Not specified';
-            const subjectVal = document.getElementById('subject').value.trim();
-            const messageVal = document.getElementById('message').value.trim();
-
-            // Build WhatsApp message
-            const waText =
-                `*New Enquiry – Veracity Autotronix Website*\n\n` +
-                `*Name:* ${nameVal}\n` +
-                `*Phone:* ${phoneVal}\n` +
-                `*Email:* ${emailVal || 'Not provided'}\n` +
-                `*Service Needed:* ${serviceVal}\n` +
-                `*Subject:* ${subjectVal}\n` +
-                `*Message:*\n${messageVal}`;
-
-            const waUrl = `https://wa.me/265999732689?text=${encodeURIComponent(waText)}`;
-
-            // Build mailto message
-            const emailBody =
-                `New enquiry from the Veracity Autotronix website:\n\n` +
-                `Name: ${nameVal}\n` +
-                `Phone: ${phoneVal}\n` +
-                `Email: ${emailVal || 'Not provided'}\n` +
-                `Service Needed: ${serviceVal}\n` +
-                `Subject: ${subjectVal}\n\n` +
-                `Message:\n${messageVal}`;
-
-            const mailtoUrl =
-                `mailto:tenny85son@gmail.com,veracityautotronix@gmail.com` +
-                `?subject=${encodeURIComponent('Contact Form: ' + subjectVal)}` +
-                `&body=${encodeURIComponent(emailBody)}`;
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            btn.disabled = true;
-            btn.style.opacity = '0.8';
-
-            // Open WhatsApp in a new tab
-            window.open(waUrl, '_blank');
-
-            // Trigger email client (stays on same page; browser opens mail app)
-            const mailLink = document.createElement('a');
-            mailLink.href = mailtoUrl;
-            mailLink.style.display = 'none';
-            document.body.appendChild(mailLink);
-            mailLink.click();
-            document.body.removeChild(mailLink);
-
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Message Sent!';
-            btn.style.background = '#007a3d';
-            showToast('Opening WhatsApp & email with your message!', 'success');
-
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-                btn.style.opacity = '';
-                btn.style.background = '';
-                contactForm.reset();
-            }, 3500);
-        });
-    }
+    const WHATSAPP_NUMBER = '265999732689';
+    const CONTACT_EMAIL   = 'veracityautotronix@gmail.com';
+    const reduceMotion    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ===== TOAST =====
     function showToast(message, type = 'success') {
@@ -233,48 +15,255 @@ document.addEventListener('DOMContentLoaded', () => {
         if (existing) existing.remove();
 
         const toast = document.createElement('div');
-        toast.className = 'va-toast';
-        toast.style.cssText = `
-            position:fixed;bottom:90px;right:24px;z-index:10000;
-            background:${type === 'success' ? '#00A651' : '#e84040'};
-            color:#fff;padding:1rem 1.5rem;border-radius:12px;
-            font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;
-            display:flex;align-items:center;gap:10px;
-            box-shadow:0 8px 30px rgba(0,0,0,0.2);
-            animation:toastIn 0.3s ease;
-            max-width:340px;
-        `;
+        toast.className = 'va-toast va-toast-' + type;
+        toast.setAttribute('role', 'status');
 
-        const style = document.createElement('style');
-        style.textContent = '@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}';
-        document.head.appendChild(style);
-
-        toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>${message}`;
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle');
+        icon.setAttribute('aria-hidden', 'true');
+        toast.appendChild(icon);
+        toast.appendChild(document.createTextNode(message));
         document.body.appendChild(toast);
 
         setTimeout(() => {
-            toast.style.transition = 'opacity 0.3s, transform 0.3s';
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(8px)';
+            toast.classList.add('va-toast-out');
             setTimeout(() => toast.remove(), 350);
-        }, 3500);
+        }, 4500);
     }
 
-    // Welcome toast on index page
-    if (window.location.pathname.includes('index') || window.location.pathname === '/' || window.location.pathname.endsWith('/veracity/')) {
-        setTimeout(() => showToast('Welcome to Veracity Autotronix! 🔋', 'success'), 1500);
-    }
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            const target = document.querySelector(a.getAttribute('href'));
-            if (target) {
-                e.preventDefault();
-                const offset = 80;
-                window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+        // ===== PROGRESS BAR + NAVBAR (one passive scroll handler) =====
+        const progressBar = document.getElementById('progressBar');
+        const navbar = document.getElementById('navbar');
+        let ticking = false;
+
+        function onScroll() {
+            const h = document.documentElement;
+            if (progressBar) {
+                const max = h.scrollHeight - h.clientHeight;
+                progressBar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
             }
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+            ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+        }, { passive: true });
+        onScroll();
+
+        // ===== MOBILE MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        if (hamburger && navLinks) {
+            const setMenu = (open) => {
+                hamburger.classList.toggle('open', open);
+                navLinks.classList.toggle('open', open);
+                hamburger.setAttribute('aria-expanded', String(open));
+                hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            };
+
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setMenu(!navLinks.classList.contains('open'));
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => setMenu(false));
+            });
+            document.addEventListener('click', (e) => {
+                if (navbar && !navbar.contains(e.target)) setMenu(false);
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    setMenu(false);
+                    hamburger.focus();
+                }
+            });
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) setMenu(false);
+            });
+        }
+
+        // ===== REVEAL ON SCROLL =====
+        const reveals = document.querySelectorAll('.reveal');
+        if (reveals.length && 'IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+            reveals.forEach(el => revealObserver.observe(el));
+        }
+
+        // ===== COUNTER ANIMATION =====
+        // The real value is already in the HTML, so the page is correct without JS.
+        const counters = document.querySelectorAll('[data-target]');
+        if (counters.length && 'IntersectionObserver' in window && !reduceMotion) {
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const el = entry.target;
+                    const target = parseInt(el.getAttribute('data-target'), 10);
+                    const suffix = el.getAttribute('data-suffix') || '';
+                    let count = 0;
+                    const step = Math.max(target / 60, 1);
+                    const timer = setInterval(() => {
+                        count = Math.min(count + step, target);
+                        el.textContent = Math.floor(count) + suffix;
+                        if (count >= target) clearInterval(timer);
+                    }, 20);
+                    counterObserver.unobserve(el);
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(el => counterObserver.observe(el));
+        }
+
+        // ===== TESTIMONIALS CAROUSEL =====
+        const track = document.getElementById('testiTrack');
+        const prevBtn = document.getElementById('testPrev');
+        const nextBtn = document.getElementById('testNext');
+        const dotsContainer = document.getElementById('testiDots');
+
+        if (track && prevBtn && nextBtn && dotsContainer) {
+            const cards = Array.from(track.children);
+            let current = 0;
+            let autoPlay = null;
+
+            prevBtn.setAttribute('aria-label', 'Previous review');
+            nextBtn.setAttribute('aria-label', 'Next review');
+
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', 'Show review ' + (i + 1));
+                dot.addEventListener('click', () => { goTo(i); resetAutoplay(); });
+                dotsContainer.appendChild(dot);
+            });
+
+            const getVisible = () => (window.innerWidth <= 768 ? 1 : 2);
+
+            function goTo(index) {
+                const max = Math.max(0, cards.length - getVisible());
+                current = Math.max(0, Math.min(index, max));
+                const cardWidth = cards[0].offsetWidth + 24; // card + gap
+                track.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
+                track.style.transition = reduceMotion ? 'none' : 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+                dotsContainer.querySelectorAll('.testi-dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === current);
+                });
+            }
+
+            const advance = () => {
+                const max = cards.length - getVisible();
+                goTo(current + 1 > max ? 0 : current + 1);
+            };
+
+            prevBtn.addEventListener('click', () => { goTo(current - 1); resetAutoplay(); });
+            nextBtn.addEventListener('click', () => { advance(); resetAutoplay(); });
+
+            function startAutoplay() {
+                if (reduceMotion) return;
+                autoPlay = setInterval(advance, 5000);
+            }
+            function stopAutoplay() { clearInterval(autoPlay); }
+            function resetAutoplay() { stopAutoplay(); startAutoplay(); }
+
+            const carousel = track.parentElement;
+            carousel.addEventListener('mouseenter', stopAutoplay);
+            carousel.addEventListener('mouseleave', startAutoplay);
+            carousel.addEventListener('focusin', stopAutoplay);
+            carousel.addEventListener('focusout', startAutoplay);
+
+            startAutoplay();
+            window.addEventListener('resize', () => goTo(0));
+        }
+
+        // ===== CONTACT FORM =====
+        // Opens WhatsApp (primary) or the visitor's email app (secondary) with the message pre-filled.
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            const emailBtn = document.getElementById('emailBtn');
+            const note = document.getElementById('formNote');
+
+            const collect = () => {
+                const serviceEl = document.getElementById('service');
+                const chosen = serviceEl.options[serviceEl.selectedIndex];
+                return {
+                    name:    document.getElementById('name').value.trim(),
+                    phone:   document.getElementById('phone').value.trim(),
+                    email:   document.getElementById('email').value.trim() || 'Not provided',
+                    service: chosen && chosen.value ? chosen.text : 'Not specified',
+                    subject: document.getElementById('subject').value.trim(),
+                    message: document.getElementById('message').value.trim()
+                };
+            };
+
+            // Native validation messages, but we handle submission ourselves.
+            const isValid = () => {
+                if (contactForm.reportValidity()) return true;
+                showToast('Please fill in the highlighted fields.', 'error');
+                return false;
+            };
+            const isBot = () => {
+                const hp = document.getElementById('website_url');
+                return hp && hp.value.trim() !== '';
+            };
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (isBot() || !isValid()) return;
+                const d = collect();
+                const text =
+                    '*New enquiry – Veracity Autotronix website*\n\n' +
+                    '*Name:* ' + d.name + '\n' +
+                    '*Phone:* ' + d.phone + '\n' +
+                    '*Email:* ' + d.email + '\n' +
+                    '*Service:* ' + d.service + '\n' +
+                    '*Subject:* ' + d.subject + '\n\n' +
+                    '*Message:*\n' + d.message;
+                window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+                if (note) note.textContent = 'WhatsApp is open. Press send there to deliver your message.';
+                showToast('WhatsApp opened. Press send to deliver your message.');
+            });
+
+            if (emailBtn) {
+                emailBtn.addEventListener('click', () => {
+                    if (isBot() || !isValid()) return;
+                    const d = collect();
+                    const body =
+                        'New enquiry from the Veracity Autotronix website:\n\n' +
+                        'Name: ' + d.name + '\n' +
+                        'Phone: ' + d.phone + '\n' +
+                        'Email: ' + d.email + '\n' +
+                        'Service: ' + d.service + '\n' +
+                        'Subject: ' + d.subject + '\n\n' +
+                        'Message:\n' + d.message;
+                    window.location.href = 'mailto:' + CONTACT_EMAIL +
+                        '?subject=' + encodeURIComponent('Website enquiry: ' + d.subject) +
+                        '&body=' + encodeURIComponent(body);
+                    if (note) note.textContent = 'Your email app should open with the message ready. Press send there to deliver it.';
+                    showToast('Opening your email app. Press send to deliver your message.');
+                });
+            }
+        }
+
+        // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            const id = a.getAttribute('href');
+            if (id.length < 2) return;
+            a.addEventListener('click', (e) => {
+                const target = document.querySelector(id);
+                if (!target) return;
+                e.preventDefault();
+                window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: reduceMotion ? 'auto' : 'smooth' });
+                if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+                target.focus({ preventScroll: true });
+            });
         });
     });
-
-});
+})();

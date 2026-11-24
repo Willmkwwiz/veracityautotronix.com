@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.veracityautotronix.com/sitemap.xml
+Sitemap: https://veracityautotronix.com/sitemap.xml
